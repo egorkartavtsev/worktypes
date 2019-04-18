@@ -1,0 +1,103 @@
+.main-menu{
+    height: 100vh;
+    background-color: #47648f;
+    background-attachment: fixed;
+}
+.main-menu label{
+    color: #ffffff;
+}
+.calendBlock {
+    position: absolute;
+    top: 0px;
+    z-index: 99999;
+    transform: translate3d(0px, 48px, 0px);
+    height: fit-content;
+    background-color: #ffffff;
+}
+
+@media (min-width: 576px) {
+    .calendBlock {
+        position: fixed!important;
+        top: 0px;
+        z-index: 99999;
+        transform: translate3d(0px, 48px, 0px);
+        height: fit-content;
+        background-color: #ffffff;
+    }
+}
+.closeBtn {
+    background-color: #c56a6a;
+    padding: 0px 7px 5px 7px;
+    border-radius: 3px;
+    color: #ffffff;
+}
+
+.loader{
+    background-image: url('./loader.gif');
+    background-repeat: no-repeat;
+    background-size: 25%;
+    background-position: center;
+}
+
+.big-loader{
+    height: 100vh;
+    width: 100vw;
+}
+
+.bigData{
+    height: 100vh;
+    overflow-x: auto;
+    overflow-y: auto;
+}
+
+.det{
+    background-color: #bebefe;
+    cursor: pointer;
+}
+.det:hover{
+    background-color: #bee0fe;
+}
+
+.summ{
+    background-color: #bee0fe;
+    border-right: 1px solid #47648f;
+    border-left: 1px solid #47648f;
+    text-align: center;
+}
+.vertText{
+    text-align:center;
+    white-space:nowrap;
+    padding: 10px 0px!important;
+}
+.vertText span{
+    margin: 0% -48%;
+    transform: rotate(-90deg);
+    transform-origin: 50% 50%;
+    display: inline-block;
+    padding: 27px 0%;
+}
+
+.empty-row{
+    background-color: #e5e0ef
+}
+
+/* ======================== styles to scrollbar =========================== */
+::-webkit-scrollbar-track {
+    /*background-color: #ecedee;*/
+    background-color: rgba(0, 0, 0, 0);
+}
+
+::-webkit-scrollbar-thumb {
+    -webkit-border-radius: 0px;
+    border-radius: 0px;
+    background-color: #47648f;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background-color: #47648f;
+}
+
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}

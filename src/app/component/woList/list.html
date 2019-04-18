@@ -1,0 +1,31 @@
+<div class="w-100">
+    <div class="row pt-2">
+        <div class="col"><button class="btn btn-success" (click)="goBack()">Назад</button></div>
+        <div class="col-10 alert alert-info text-center">
+            <p>Дата: <b>{{request.date}}</b> Статус: <b>{{request.status}}</b> Исполнитель: <b>{{request.vendor}}</b> Ресурс: <b>{{request.dep}}</b></p>
+        </div>
+        <div class="clearfix"></div>
+        <div class="col-12">
+            <table class="table table-bordered">
+                <thead class="thead-dark">
+                    <th>ЗВР</th>
+                    <th>Начало</th>
+                    <th>Окончание</th>
+                    <th>Статус</th>
+                    <th>Агрегат</th>
+                    <th>#</th>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let row of list">
+                        <td>{{row.WIP_ENTITY_NAME}}</td>
+                        <td>{{row.SCHEDULED_START_DATE}}</td>
+                        <td>{{row.SCHEDULED_COMPLETION_DATE}}</td>
+                        <td>{{row.WORK_ORDER_STATUS}}</td>
+                        <td>{{row.INSTANCE_DESCRIPTION}}</td>
+                        <td><button class="btn btn-primary"><i class="fas fa-table"></i></button></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
