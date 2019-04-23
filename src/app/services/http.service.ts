@@ -3,8 +3,8 @@ import {HttpClient} from '@angular/common/http';
   
 @Injectable()
 export class HttpService{
-    workPort: string = '7100';
-    // workPort: string = '7190';
+    // workPort: string = '7100';
+    workPort: string = '7190';
     constructor(private http: HttpClient) { }
 
     getData(query: string, cond?: any){

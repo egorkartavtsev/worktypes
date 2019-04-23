@@ -1,39 +1,40 @@
-<ng-template [ngIf]="!emptyData && !loading && !showDetails">
-        <div class="">
-            <h4>Заголовок таблицы. пока заготовка</h4>
-            <table class="table table-bordered ">
-             <thead class="thead-dark">
-                 <tr>
-                    <th>Наименование</th>
-                    <ng-container *ngFor="let cell of statuses">
-                        <th *ngFor="let item of cell" class="vertText"><span>{{item}}</span></th>
-                    </ng-container>
-                </tr>
-             </thead>
-             <tbody>
-                <tr *ngFor="let row of curData">
-                    <td>{{row.name}}</td>
-                    <ng-container *ngFor="let cell of row.details">
-                        <td *ngFor="let item of cell" class="{{item.class}}">{{(item.trud=="0")?"":item.trud}}</td>
-                    </ng-container>
-                </tr>
-             </tbody>
-            </table>
-        </div>
-    </ng-template>
-    <ng-template [ngIf]="emptyData && !loading && !showDetails">
-        <div class="row justify-content-center pt-5">
-            <div class="col-8 col-md-5 text-center">
-                <div class="alert alert-danger">
-                    <p class="h3"><i class="fas fa-exclamation-triangle"></i></p>
-                    <p class="h4">Пожалуйста, выберите организацию и период</p>
-                </div>
+<ng-template [ngIf]="emptyData && !loading">
+    <div class="row w-100 justify-content-center pt-5">
+        <div class="col-8 col-md-5 text-center">
+            <div class="alert alert-primary">
+                <p class="h3"><i class="fas fa-exclamation-triangle"></i></p>
+                <p class="h4">Пожалуйста, выберите организацию и корректный отчётный период</p>
             </div>
         </div>
-    </ng-template>
-    <ng-template [ngIf]="loading && !showDetails">
-        <div class="row justify-content-center">
-            <div class="loader big-loader"></div>
-        </div>
-    </ng-template>
+    </div>
+</ng-template>
+
+<ng-template [ngIf]="!emptyData && !loading">
+    <div class="">
+        <h4>Трудозатраты. Заголовок таблицы. пока заготовка.</h4>
+        <!-- <table class="table table-bordered ">
+            <thead class="thead-dark">
+                <tr>
+                <th>Наименование</th>
+                <ng-container *ngFor="let cell of statuses">
+                    <th *ngFor="let item of cell" class="vertText"><span>{{item}}</span></th>
+                </ng-container>
+            </tr>
+            </thead>
+            <tbody>
+            <tr *ngFor="let row of curData">
+                <td>{{row.name}}</td>
+                <ng-container *ngFor="let cell of row.details">
+                    <td *ngFor="let item of cell" class="{{item.class}}">{{(item.trud=="0")?"":item.trud}}</td>
+                </ng-container>
+            </tr>
+            </tbody>
+        </table> -->
+    </div>
+</ng-template>
+<ng-template [ngIf]="loading">
+    <div class="row justify-content-center">
+        <div class="loader big-loader"></div>
+    </div>
+</ng-template>
     

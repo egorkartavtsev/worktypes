@@ -1,11 +1,17 @@
 .main-menu{
-    height: 100vh;
+    /* height: 100vh; */
     background-color: #47648f;
     background-attachment: fixed;
 }
 .main-menu label{
     color: #ffffff;
 }
+
+.main-menu a{
+    color: #ffffff;
+    background-color: #7c90af;
+}
+
 .calendBlock {
     position: absolute;
     top: 0px;
@@ -35,19 +41,22 @@
 .loader{
     background-image: url('./loader.gif');
     background-repeat: no-repeat;
-    background-size: 25%;
+    background-size: 15%;
     background-position: center;
 }
 
 .big-loader{
-    height: 100vh;
-    width: 100vw;
+    height: 50vh;
 }
 
 .bigData{
-    height: 100vh;
+    /* height: 100vh; */
     overflow-x: auto;
     overflow-y: auto;
+}
+
+.alert-primary {
+    color: #47648f!important;
 }
 
 .det{

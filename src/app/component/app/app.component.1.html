@@ -1,0 +1,121 @@
+<div class="row w-100">
+  <div class="col-2 d-none d-md-block">
+      <div class="main-menu w-100 pt-5">
+          <div class="container-fluid">
+            <div class="form-group">
+              <label>Организация</label>
+              <select type="text" [(ngModel)]="org_id" class="form-control" (change)="validate()">
+                <option selected disabled value="">Выберите организацию</option>
+                <option *ngFor="let org of organs" value="{{org.ORGANIZATION_ID}}">{{org.ORGANIZATION_NAME}}</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>Начало периода</label>
+              <div class="input-group">
+                  <input type="text" [(ngModel)]="start" class="form-control" (click)="toogleCalendar('start')">
+                  <div class="input-group-prepend">
+                      <button class="input-group-text btn btn-default d-none d-sm-block" (click)="toogleCalendar('start')"> <i class="fas fa-calendar"> </i></button>
+                  </div>
+              </div>
+              <div #startCal class="calendBlock d-none">
+                <div class="card-body">
+                  <div class="w-100">
+                          <button type="button" class="close pull-right mb-3">
+                              <span class="closeBtn" aria-hidden="true" (click)="toogleCalendar('start')">&times; </span>
+                          </button>
+                      </div>
+                      <ngb-datepicker #d
+                                      [footerTemplate]="tstart"
+                                      [(ngModel)]="modelStart"
+                                      [startDate]="startCalDay"
+                                      (navigate)="startCalDay = $event.next"></ngb-datepicker>
+                  </div>
+              </div>
+            </div>
+            <div class="form-group">
+              <label>Конец периода</label>
+              <div class="input-group">
+                  <input type="text" [(ngModel)]="end" class="form-control" (click)="toogleCalendar('end')">
+                  <div class="input-group-prepend">
+                      <button class="input-group-text btn btn-default d-none d-sm-block" (click)="toogleCalendar('end')"> <i class="fas fa-calendar"> </i></button>
+                  </div>
+              </div>
+              <div #endCal class="calendBlock d-none">
+                <div class="card-body">
+                  <div class="w-100">
+                          <button type="button" class="close pull-right mb-3">
+                              <span class="closeBtn" aria-hidden="true" (click)="toogleCalendar('end')">&times; </span>
+                          </button>
+                      </div>
+                      <ngb-datepicker #d
+                                      [footerTemplate]="tend"
+                                      [(ngModel)]="modelEnd"
+                                      [startDate]="endCalDay"
+                                      (navigate)="endCalDay = $event.next"></ngb-datepicker>
+                  </div>
+              </div>
+            </div>
+            <div class="row justify-content-center">
+              <button class="btn btn-success" (click)="getDataTable()" #applyButton disabled>Показать</button>
+            </div>
+          </div>
+      </div>
+  </div>
+  <div class="col-md-10 col-12 bigData">
+      <!-- Nav tabs -->
+      <ul class="nav nav-tabs" id="myTab" role="tablist">
+        <li class="nav-item">
+          <a class="nav-link active" id="general-tab" data-toggle="tab" href="#general" role="tab" aria-controls="general" aria-selected="true">Сводная</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" id="wo_count-tab" data-toggle="tab" href="#wo_count" role="tab" aria-controls="wo_count" aria-selected="false">ЗВР</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" id="trud-tab" data-toggle="tab" href="#trud" role="tab" aria-controls="trud" aria-selected="false">Трудозатраты</a>
+        </li>
+      </ul>
+        <div class="tab-content">
+            <div class="tab-pane active" id="general" role="tabpanel" aria-labelledby="general-tab">
+                <main-table [emptyData]="emptyDataMT" [curData]="totalDataMT" [org_id]="org_id" [statuses]="statuses" [loading]="loadingMT"></main-table>
+            </div>
+            <div class="tab-pane" id="wo_count" role="tabpanel" aria-labelledby="wo_count-tab">
+                <!-- <wo-table [emptyData]="emptyData" [curData]="totalDataWO" [org_id]="org_id" [statuses]="statusesWO" [loading]="loading"></wo-table> -->
+              </div>
+            <div class="tab-pane" id="trud" role="tabpanel" aria-labelledby="trud-tab">
+                <!-- <tz-table [emptyData]="emptyData" [curData]="totalDataWO" [org_id]="org_id" [statuses]="statusesWO" [loading]="loading"></tz-table> -->
+            </div>
+        </div>
+  </div>
+</div>
+<ng-template #tstart>
+    <div class="w-100 text-center mb-3 dpicker-footer">
+        <div class="btn-group">
+            <button (click)="setDate('start')" type="button" class="btn btn-success" title="Сохранить">
+                <i class="fas fa-calendar-check"></i>
+                <span class="d-none d-sm-inline"> Ok</span>
+            </button>
+            <button (click)="cancelDate('start')" type="button" class="btn btn-secondary" title="Отмена">
+                <i class="fas fa-thumbs-down"></i>
+                <span class="d-none d-sm-inline"> Отмена</span>
+            </button>
+        </div>
+    </div>
+</ng-template>
+<ng-template #tend>
+    <div class="w-100 text-center mb-3 dpicker-footer">
+        <div class="btn-group">
+            <button (click)="setDate('end')" type="button" class="btn btn-success" title="Сохранить">
+                <i class="fas fa-calendar-check"></i>
+                <span class="d-none d-sm-inline"> Ok</span>
+            </button>
+            <button (click)="cancelDate('end')" type="button" class="btn btn-secondary" title="Отмена">
+                <i class="fas fa-thumbs-down"></i>
+                <span class="d-none d-sm-inline"> Отмена</span>
+            </button>
+        </div>
+    </div>
+</ng-template>
+
+<ng-template #form>
+  
+</ng-template>

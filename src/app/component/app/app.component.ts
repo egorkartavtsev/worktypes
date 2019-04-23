@@ -7,28 +7,35 @@ import { HttpService } from '../../services/http.service';
   templateUrl: './app.component.html'
 })
 export class AppComponent {
-  
+  /* calend */
   modelStart: NgbDateStruct;
   modelEnd: NgbDateStruct;
   startCalDay: NgbDateStruct;
   endCalDay: NgbDateStruct;
-
+  
+  /* condition */
   start: string;
   end: string;
   org_id: string = '';
   organs: any;
-  loading: boolean = true;
-  emptyData: boolean = true;
   
+  /* main table*/
   totalDataMT: any = [];
-  totalDataWO: any = [];
+  statusesMT: any = [];
+  emptyDataMT: boolean = true;
+  loadingMT: boolean = true;
   
+  /* TZ & WOC */
+  totalDataTW: any = [];
+  statusesTW: any = [];
+  emptyDataTW: boolean = true;
+  loadingTW: boolean = true;
+  
+  /* interface */
   @ViewChild('startCal') startCal: any;
   @ViewChild('endCal') endCal: any;
   @ViewChild('applyButton') applyButton: any;
 
-  statuses: any[] = [];
-  statusesWO: any[] = [];
 
   constructor(private renderer: Renderer2, private http: HttpService){
     let sup = new Date();
@@ -42,18 +49,33 @@ export class AppComponent {
     this.end = this.makeTrueDate(this.endCalDay.day.toString()+'.'+this.endCalDay.month.toString()+'.'+this.endCalDay.year.toString()+' 23:59:00');
     
     
-    this.loading = true;
     this.http.getData('304').subscribe(
       (data: any) => {
         this.organs = data;
-        this.loading = false;
+        this.loadingMT = false;
+        this.loadingTW = false;
       }
     );
   }
 
+  /* validate from*/
+  validate(){
+    // var supStart = new Date(this.start.replace(/(\d+).(\d+).(\d+) (\d+):(\d+):(\d+)/, '$1/$2/$3 $4:$5:$6'));
+    var supStart = new Date(this.start.replace(/(\d+).(\d+).(\d+)/, '$2/$1/$3'));
+    var supEnd = new Date(this.end.replace(/(\d+).(\d+).(\d+)/, '$2/$1/$3'));
+
+    if(supStart <= supEnd && this.org_id !== ''){
+      this.renderer.removeAttribute(this.applyButton.nativeElement, 'disabled');
+    } else {
+      this.renderer.setAttribute(this.applyButton.nativeElement, 'disabled', 'disabled');
+    }
+  }
+
   getDataTable(){
-    this.loading = true;
-    this.emptyData = true;
+    this.loadingMT = true;
+    this.emptyDataMT = true;
+    this.loadingTW = true;
+    this.emptyDataTW = true;
     let cond = [
       {"key":"org_id", "value":this.org_id},
       {"key":"start", "value":this.start},
@@ -62,7 +84,7 @@ export class AppComponent {
     ]
     this.http.getData('310', cond).subscribe(
       (data: any) => {
-        this.statuses = Object.keys(data['statuses']).map(i => data['statuses'][i]);
+        this.statusesMT = Object.keys(data['statuses']).map(i => data['statuses'][i]);
         let tmp  = Object.keys(data['list']).map(i => data['list'][i]);
         // this.totalData = tmp;
         this.totalDataMT = [];
@@ -72,32 +94,15 @@ export class AppComponent {
           this.totalDataMT[ind]['work_types'] = Object.keys(this.totalDataMT[ind]['work_types']).map(i => this.totalDataMT[ind]['work_types'][i])
           ++ind;
         }
-        
-        ind = 0;
-        tmp = Object.keys(data['WOlist']).map(i => data['WOlist'][i]);
-        this.totalDataWO = [];
-        for (let row of tmp){
-          this.totalDataWO.push(row);
-          this.totalDataWO[ind]['details'] = Object.keys(this.totalDataWO[ind]['details']).map(i => this.totalDataWO[ind]['details'][i]);
-          let ci = 0;
-            for(let item of this.totalDataWO[ind]['details']){
-              this.totalDataWO[ind]['details'][ci] = Object.keys(this.totalDataWO[ind]['details'][ci]).map(i => this.totalDataWO[ind]['details'][ci][i]);
-              ++ci;
-            }
-          ++ind;
-        }
-        
-        this.statusesWO = [];
-        tmp = Object.keys(data['WTHeader']).map(i => data['WTHeader'][i]);
-        ind = 0;
-        for (let row of tmp){
-          this.statusesWO.push(row);
-          this.statusesWO[ind] = Object.keys(this.statusesWO[ind]).map(i => this.statusesWO[ind][i])
-          ++ind;
-        }
-        
-        this.loading = false;
-        this.emptyData = false;
+        this.loadingMT = false;
+        this.emptyDataMT = false;
+        /* отчёты ТЗ и ЗВР */
+        this.http.getData('314', cond).subscribe(
+          (data: any) => {
+            this.loadingTW = false;
+            this.emptyDataTW = false;
+            console.log(data);
+          });
       }
     );
   }
@@ -167,21 +172,6 @@ export class AppComponent {
         month = (sup.getMonth() + 1).toString();
     }
     return day + "." + month + "." + year;
-  }
-  /* validate from*/
-  validate(){
-    // var supStart = new Date(this.start.replace(/(\d+).(\d+).(\d+) (\d+):(\d+):(\d+)/, '$1/$2/$3 $4:$5:$6'));
-    var supStart = new Date(this.start.replace(/(\d+).(\d+).(\d+)/, '$2/$1/$3'));
-    var supEnd = new Date(this.end.replace(/(\d+).(\d+).(\d+)/, '$2/$1/$3'));
-    var test: boolean;
-    // if(supStart.valueOf() <= supEnd.valueOf() && this.org_id !== ''){
-    if(supStart <= supEnd && this.org_id !== ''){
-      this.renderer.removeAttribute(this.applyButton.nativeElement, 'disabled');
-      test = true;
-    } else {
-      this.renderer.setAttribute(this.applyButton.nativeElement, 'disabled', 'disabled');
-      test = false;
-    }
   }
   
 }

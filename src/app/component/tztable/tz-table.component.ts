@@ -7,11 +7,10 @@ import { HttpService } from '../../services/http.service';
 })
 export class TzTableComponent {
   
+    @Input() loading: boolean;
     @Input() emptyData: boolean;
-    @Input() curData:      any;
-    @Input() statuses: any;
-    @Input() loading:    boolean;
-    @Input() org_id:    string;
+    @Input() totalData: any[] = [];
+    @Input() statuses: any[] = [];
 
     showDetails: boolean = false;
     list: any[] = [];

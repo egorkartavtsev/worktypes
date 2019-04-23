@@ -1,92 +1,90 @@
-<div class="row w-100">
-  <div class="col-3 d-none d-md-block">
-      <div class="main-menu w-100 pt-5">
-          <div class="container-fluid">
-            <div class="form-group">
-              <label>Организация</label>
-              <select type="text" [(ngModel)]="org_id" class="form-control" (change)="validate()">
-                <option selected disabled value="">Выберите организацию</option>
-                <option *ngFor="let org of organs" value="{{org.ORGANIZATION_ID}}">{{org.ORGANIZATION_NAME}}</option>
-              </select>
+<div class="main-menu w-100">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="form-group col-12 col-md-2">
+                <label>Организация</label>
+                <select type="text" [(ngModel)]="org_id" class="form-control form-control-sm" (change)="validate()">
+                    <option selected disabled value="">Выберите организацию</option>
+                    <option *ngFor="let org of organs" value="{{org.ORGANIZATION_ID}}">{{org.ORGANIZATION_NAME}}</option>
+                </select>
             </div>
-            <div class="form-group">
-              <label>Начало периода</label>
-              <div class="input-group">
-                  <input type="text" [(ngModel)]="start" class="form-control" (click)="toogleCalendar('start')">
-                  <div class="input-group-prepend">
-                      <button class="input-group-text btn btn-default d-none d-sm-block" (click)="toogleCalendar('start')"> <i class="fas fa-calendar"> </i></button>
-                  </div>
-              </div>
-              <div #startCal class="calendBlock d-none">
-                <div class="card-body">
-                  <div class="w-100">
-                          <button type="button" class="close pull-right mb-3">
-                              <span class="closeBtn" aria-hidden="true" (click)="toogleCalendar('start')">&times; </span>
-                          </button>
-                      </div>
-                      <ngb-datepicker #d
-                                      [footerTemplate]="tstart"
-                                      [(ngModel)]="modelStart"
-                                      [startDate]="startCalDay"
-                                      (navigate)="startCalDay = $event.next"></ngb-datepicker>
-                  </div>
-              </div>
+            <div class="form-group col-12 col-md-2">
+                <label>Начало периода</label>
+                <input type="text" [(ngModel)]="start" class="form-control form-control-sm" (click)="toogleCalendar('start')">
+                <div #startCal class="calendBlock d-none">
+                    <div class="card-body">
+                    <div class="w-100">
+                            <button type="button" class="close pull-right mb-3">
+                                <span class="closeBtn" aria-hidden="true" (click)="toogleCalendar('start')">&times; </span>
+                            </button>
+                        </div>
+                        <ngb-datepicker #d
+                                        [footerTemplate]="tstart"
+                                        [(ngModel)]="modelStart"
+                                        [startDate]="startCalDay"
+                                        (navigate)="startCalDay = $event.next"></ngb-datepicker>
+                    </div>
+                </div>
             </div>
-            <div class="form-group">
-              <label>Конец периода</label>
-              <div class="input-group">
-                  <input type="text" [(ngModel)]="end" class="form-control" (click)="toogleCalendar('end')">
-                  <div class="input-group-prepend">
-                      <button class="input-group-text btn btn-default d-none d-sm-block" (click)="toogleCalendar('end')"> <i class="fas fa-calendar"> </i></button>
-                  </div>
-              </div>
-              <div #endCal class="calendBlock d-none">
-                <div class="card-body">
-                  <div class="w-100">
-                          <button type="button" class="close pull-right mb-3">
-                              <span class="closeBtn" aria-hidden="true" (click)="toogleCalendar('end')">&times; </span>
-                          </button>
-                      </div>
-                      <ngb-datepicker #d
-                                      [footerTemplate]="tend"
-                                      [(ngModel)]="modelEnd"
-                                      [startDate]="endCalDay"
-                                      (navigate)="endCalDay = $event.next"></ngb-datepicker>
-                  </div>
-              </div>
+            <div class="form-group col-12 col-md-2">
+                <label>Конец периода</label>
+                <input type="text" [(ngModel)]="end" class="form-control form-control-sm" (click)="toogleCalendar('end')">
+                <div #endCal class="calendBlock d-none">
+                    <div class="card-body">
+                    <div class="w-100">
+                            <button type="button" class="close pull-right mb-3">
+                                <span class="closeBtn" aria-hidden="true" (click)="toogleCalendar('end')">&times; </span>
+                            </button>
+                        </div>
+                        <ngb-datepicker #d
+                                        [footerTemplate]="tend"
+                                        [(ngModel)]="modelEnd"
+                                        [startDate]="endCalDay"
+                                        (navigate)="endCalDay = $event.next"></ngb-datepicker>
+                    </div>
+                </div>
             </div>
-            <div class="row justify-content-center">
-              <button class="btn btn-success" (click)="getDataTable()" #applyButton disabled>Показать</button>
-            </div>
-          </div>
-      </div>
-  </div>
-  <div class="col-md-9 col-12 bigData">
-      <!-- Nav tabs -->
-      <ul class="nav nav-tabs" id="myTab" role="tablist">
-        <li class="nav-item">
-          <a class="nav-link active" id="general-tab" data-toggle="tab" href="#general" role="tab" aria-controls="general" aria-selected="true">Сводная</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" id="wo_count-tab" data-toggle="tab" href="#wo_count" role="tab" aria-controls="wo_count" aria-selected="false">ЗВР</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" id="trud-tab" data-toggle="tab" href="#trud" role="tab" aria-controls="trud" aria-selected="false">Трудозатраты</a>
-        </li>
-      </ul>
-        <div class="tab-content">
-            <div class="tab-pane active" id="general" role="tabpanel" aria-labelledby="general-tab">
-                <main-table [emptyData]="emptyData" [curData]="totalDataMT" [org_id]="org_id" [statuses]="statuses" [loading]="loading"></main-table>
-            </div>
-            <div class="tab-pane" id="wo_count" role="tabpanel" aria-labelledby="wo_count-tab">
-                <wo-table [emptyData]="emptyData" [curData]="totalDataWO" [org_id]="org_id" [statuses]="statusesWO" [loading]="loading"></wo-table>
-              </div>
-            <div class="tab-pane" id="trud" role="tabpanel" aria-labelledby="trud-tab">
-                <tz-table [emptyData]="emptyData" [curData]="totalDataWO" [org_id]="org_id" [statuses]="statusesWO" [loading]="loading"></tz-table>
+            <div class="col-12 col-md-2">
+                <label class="col-12">&nbsp;</label>
+                <button class="btn btn-sm btn-success" (click)="getDataTable()" #applyButton disabled>Показать</button>
             </div>
         </div>
-  </div>
+        <div class="row">
+            <ul class="nav nav-tabs" id="myTab" role="tablist">
+                <li class="nav-item">
+                    <a class="nav-link active" id="general-tab" data-toggle="tab" href="#general" role="tab" aria-controls="general" aria-selected="true">Сводная</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" id="trud-tab" data-toggle="tab" href="#trud" role="tab" aria-controls="trud" aria-selected="false">Трудозатраты</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" id="wo_count-tab" data-toggle="tab" href="#wo_count" role="tab" aria-controls="wo_count" aria-selected="false">ЗВР</a>
+                </li>
+            </ul>
+        </div>
+    </div>
 </div>
+<div class="w-100">
+    <ng-template [ngIf]="!loading" [ngIfElse]="loader">
+        <div class="tab-content">
+            <div class="tab-pane active" id="general" role="tabpanel" aria-labelledby="general-tab">
+                <main-table [loading]="loadingMT" [totalData]="totalDataMT" [statuses]="statusesMT" [emptyData]="emptyDataMT"></main-table>
+            </div>
+            <div class="tab-pane" id="wo_count" role="tabpanel" aria-labelledby="wo_count-tab">
+                <!-- <wo-table [loading]="loadingMT" [totalData]="totalDataMT" [statuses]="statusesMT" [emptyData]="emptyDataMT"></wo-table> -->
+            </div>
+            <div class="tab-pane" id="trud" role="tabpanel" aria-labelledby="trud-tab">
+                <tz-table [loading]="loadingTW" [totalData]="totalDataTW" [statuses]="statusesTW" [emptyData]="emptyDataTW"></tz-table>
+            </div>
+        </div>
+    </ng-template>
+</div>
+
+  <!-- 
+  <div class="col-md-10 col-12 bigData">
+        
+  </div> -->
+
 <ng-template #tstart>
     <div class="w-100 text-center mb-3 dpicker-footer">
         <div class="btn-group">
@@ -116,6 +114,8 @@
     </div>
 </ng-template>
 
-<ng-template #form>
-  
+<ng-template #loader>
+    <div class="w-100">
+        <div class="loader big-loader"></div>
+    </div>
 </ng-template>
