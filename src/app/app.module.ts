@@ -10,7 +10,6 @@ import { NgbModule }            from '@ng-bootstrap/ng-bootstrap';
 import { AppComponent } from './component/app/app.component';
 import { MainTableComponent } from './component/maintable/main-table.component';
 import { TzTableComponent } from './component/tztable/tz-table.component';
-import { WoTableComponent } from './component/wotable/wo-table.component';
 import { ListComponent } from './component/woList/list.component';
 
 //services
@@ -18,7 +17,10 @@ import { HttpService } from './services/http.service';
 
 @NgModule({
   declarations: [
-    AppComponent, MainTableComponent, ListComponent, WoTableComponent, TzTableComponent
+    AppComponent, 
+    MainTableComponent, 
+    ListComponent,
+    TzTableComponent
   ],
   imports: [
     NgbModule,

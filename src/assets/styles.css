@@ -47,12 +47,13 @@
 
 .big-loader{
     height: 50vh;
+    width: 100vw;
 }
 
 .bigData{
-    /* height: 100vh; */
-    overflow-x: auto;
-    overflow-y: auto;
+    width: 100vw!important;
+    height: 100vh!important;
+    overflow: auto;
 }
 
 .alert-primary {
@@ -68,9 +69,7 @@
 }
 
 .summ{
-    background-color: #bee0fe;
-    border-right: 1px solid #47648f;
-    border-left: 1px solid #47648f;
+    background-color: #bee0fe!important;
     text-align: center;
 }
 .vertText{
@@ -89,6 +88,44 @@
 .empty-row{
     background-color: #e5e0ef
 }
+
+.toggler-btn{
+    background-color: #7c90af;
+    cursor: pointer;
+    color: #ffffff!important;
+    padding: 0 20px;
+    border-radius: 0px 0px 5px 5px;
+    margin-right: 10px;
+}
+
+.attention {
+    background-color: #ac4545;    
+}
+
+.wrapp{
+    position: relative;
+}
+
+.cont{
+    position: relative;
+}
+
+.woccol{
+    background-color: #ebeaf3;
+}
+
+.summwoccol{
+    border-right: 1px solid #47648f!important;
+}
+.clearff::after {
+    content: '';
+    display: block;
+    clear: both;
+    height: 0px;
+    visibility: hidden;
+}
+
+
 
 /* ======================== styles to scrollbar =========================== */
 ::-webkit-scrollbar-track {

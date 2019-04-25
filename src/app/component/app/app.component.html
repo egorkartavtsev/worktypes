@@ -1,5 +1,5 @@
-<div class="main-menu w-100">
-    <div class="container-fluid">
+<div class="w-100 wrapp" #mainMenu>
+    <div class="main-menu container-fluid cont">
         <div class="row">
             <div class="form-group col-12 col-md-2">
                 <label>Организация</label>
@@ -55,29 +55,25 @@
                     <a class="nav-link active" id="general-tab" data-toggle="tab" href="#general" role="tab" aria-controls="general" aria-selected="true">Сводная</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" id="trud-tab" data-toggle="tab" href="#trud" role="tab" aria-controls="trud" aria-selected="false">Трудозатраты</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" id="wo_count-tab" data-toggle="tab" href="#wo_count" role="tab" aria-controls="wo_count" aria-selected="false">ЗВР</a>
+                    <a class="nav-link" id="trud-tab" data-toggle="tab" href="#trud" role="tab" aria-controls="trud" aria-selected="false">По иерархии</a>
                 </li>
             </ul>
         </div>
     </div>
+    <div class="clearff"></div>
 </div>
-<div class="w-100">
-    <ng-template [ngIf]="!loading" [ngIfElse]="loader">
-        <div class="tab-content">
-            <div class="tab-pane active" id="general" role="tabpanel" aria-labelledby="general-tab">
-                <main-table [loading]="loadingMT" [totalData]="totalDataMT" [statuses]="statusesMT" [emptyData]="emptyDataMT"></main-table>
-            </div>
-            <div class="tab-pane" id="wo_count" role="tabpanel" aria-labelledby="wo_count-tab">
-                <!-- <wo-table [loading]="loadingMT" [totalData]="totalDataMT" [statuses]="statusesMT" [emptyData]="emptyDataMT"></wo-table> -->
-            </div>
-            <div class="tab-pane" id="trud" role="tabpanel" aria-labelledby="trud-tab">
-                <tz-table [loading]="loadingTW" [totalData]="totalDataTW" [statuses]="statusesTW" [emptyData]="emptyDataTW"></tz-table>
-            </div>
+<div class="w-100" #content>
+    <div class="tab-content">
+        <div class="d-none toggler">
+            <a class="toggler-btn float-right" #toggler (click)="toggleMainMenu()"><i class="fas fa-arrows-alt-v"></i></a>
         </div>
-    </ng-template>
+        <div class="tab-pane active" id="general" role="tabpanel" aria-labelledby="general-tab">
+            <main-table [org_id]="org_id" [loading]="loadingMT" [totalData]="totalDataMT" [statuses]="statusesMT" [emptyData]="emptyDataMT"></main-table>
+        </div>
+        <div class="tab-pane" id="trud" role="tabpanel" aria-labelledby="trud-tab" #subrep>
+            <tz-table [loading]="loadingTW" [totalData]="currentDataTW" [statuses]="statusesTW" [emptyData]="emptyDataTW"></tz-table>
+        </div>
+    </div>
 </div>
 
   <!-- 
@@ -111,11 +107,5 @@
                 <span class="d-none d-sm-inline"> Отмена</span>
             </button>
         </div>
-    </div>
-</ng-template>
-
-<ng-template #loader>
-    <div class="w-100">
-        <div class="loader big-loader"></div>
     </div>
 </ng-template>

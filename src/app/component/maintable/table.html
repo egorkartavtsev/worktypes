@@ -1,4 +1,4 @@
-<ng-template [ngIf]="emptyData && !loading">
+<ng-template [ngIf]="emptyData && !loading && !showDetails">
     <div class="row w-100 justify-content-center pt-5">
         <div class="col-8 col-md-5 text-center">
             <div class="alert alert-primary">
@@ -8,15 +8,15 @@
         </div>
     </div>
 </ng-template>
-<ng-template [ngIf]="loading">
-    <div class="row justify-content-center">
+<ng-template [ngIf]="loading && !showDetails">
+    <div class="w-100 row justify-content-center">
         <div class="loader big-loader"></div>
     </div>
 </ng-template>
-<ng-template [ngIf]="!emptyData && !loading">
+<ng-template [ngIf]="!emptyData && !loading && !showDetails">
     <div class="">
-        <h4>Сводный отчёт. Заголовок таблицы. пока заготовка</h4>
-        <table class="table table-bordered ">
+        <h4>Сводный отчёт. Заголовок таблицы. пока заготовка ({{org_id}})</h4>
+        <table class="table table-bordered table-hover">
          <thead class="thead-dark">
              <tr>
                 <th rowspan="2">Дата</th>
@@ -38,26 +38,16 @@
                 <td>{{(row.status!=="NaN")?row.status:""}}</td>
                 <td>{{(row.vendor!=="NaN")?row.vendor:""}}</td>
                 <td>{{(row.dep!=="NaN")?row.dep:""}}</td>
-                <ng-container *ngFor="let cell of row.work_types">
-                    <td class="{{(cell.trud=='0')?'':'det'}}">{{(cell.trud=="0")?"":cell.trud}}</td>
-                    <td class="{{(cell.wo_count=='0')?'':'det'}}" (click)="getDetails(cell.wo_count, row.org_id, row.date, row.vendor, row.dep, row.status)">{{(cell.wo_count=="0")?"":cell.wo_count}}</td>
+                <ng-container *ngFor="let cell of row.work_types | keyvalue">
+                    <td class="{{(cell.value.trud=='0')?'':'det'}}" (click)="getDetails(cell.value.wo_count, org_id, row.date, row.vendor, row.dep, row.status, cell.key)">{{(cell.value.trud=="0")?"":cell.value.trud}}</td>
+                    <td class="{{(cell.value.wo_count=='0')?'':'det'}}" (click)="getDetails(cell.value.wo_count, org_id, row.date, row.vendor, row.dep, row.status, cell.key)">{{(cell.value.wo_count=="0")?"":cell.value.wo_count}}</td>
                 </ng-container>
             </tr>
          </tbody>
         </table>
     </div>
 </ng-template>
-<!-- <ng-template [ngIf]="emptyData && !loading && !showDetails">
-    <div class="row justify-content-center pt-5">
-        <div class="col-8 col-md-5 text-center">
-            <div class="alert alert-danger">
-                <p class="h3"><i class="fas fa-exclamation-triangle"></i></p>
-                <p class="h4">Пожалуйста, выберите организацию и период</p>
-            </div>
-        </div>
-    </div>
-</ng-template>
 
 <ng-template [ngIf]="showDetails">
     <details-block [request]="request" [list]="list" (onToggle)="toogleDetails()"></details-block>
-</ng-template> -->
+</ng-template>

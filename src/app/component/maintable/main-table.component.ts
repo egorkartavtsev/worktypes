@@ -8,62 +8,50 @@ import { HttpService } from '../../services/http.service';
 export class MainTableComponent {
   
     @Input() loading: boolean;
+    @Input() org_id: string;
     @Input() emptyData: boolean;
     @Input() totalData: any[] = [];
     @Input() statuses: any[] = [];
 
     showDetails: boolean = false;
-    // list: any[] = [];
-    // request: any = {};
+    list: any[] = [];
+    request: any = {};
 
     constructor(private http: HttpService){
     }
 
-    getDetails(flag: string, org_id:string, date: string, vendor: string, dep: string, status: string){
-      // if(flag == '0'){
-      //   return false;
-      // } else {
-      //   this.request = {
-      //     "date": date,
-      //     "vendor": vendor,
-      //     "dep": dep,
-      //     "status": status
-      //   };
-      //   let cond = [
-      //     {"key":"date", "value":date},
-      //     {"key":"vendor", "value":(vendor=="NaN"?"is null":" = '"+vendor+"'")},
-      //     {"key":"dep", "value":(dep=="NaN"?"is null":" = '"+dep+"'")},
-      //     {"key":"status", "value":(status=="NaN"?"is null":" = '"+status+"'")},
-      //     {"key":"org_id", "value":org_id}
-      //   ];
-      //   this.request={
-      //     "date":date,
-      //     "status":status,
-      //     "vendor":vendor,
-      //     "dep":dep
-      //   };
-      //   this.http.getData('313', cond).subscribe(
-      //     (data: any[]) => {
-      //       this.list = Object.keys(data).map(i => data[i]);
-      //       console.log(this.list);
-      //     }
-      //   );
+    getDetails(flag: string, org_id:string, date: string, vendor: string, dep: string, status: string, work_type: string){
+      // console.log(work_type);
+      if(flag == '0'){
+        return false;
+      } else {
+        let cond = [
+          {"key":"date", "value":date},
+          {"key":"vendor", "value":(vendor=="NaN"?"is null":" = '"+vendor+"'")},
+          {"key":"dep", "value":(dep=="NaN"?"is null":" = '"+dep+"'")},
+          {"key":"status", "value":(status=="NaN"?"is null":" = '"+status+"'")},
+          {"key":"work_type", "value":(work_type=="NaN"?"is null":" = '"+work_type+"'")},
+          {"key":"org_id", "value":org_id}
+        ];
+        this.request={
+          "org_id":org_id,
+          "date":date,
+          "status":status,
+          "vendor":vendor,
+          "dep":dep,
+          "work_type": work_type
+        };
+        this.http.getData('313', cond).subscribe(
+          (data: any[]) => {
+            this.list = Object.keys(data).map(i => data[i]);
+            // console.log(this.list);
+          }
+        );
 
 
-      // }
+      }
       this.toogleDetails();
     }
-
-    // openForm(org_id: string, entity_id: string) {
-    //     let url = "";
-    //     this.http.getFormURL(org_id, entity_id).subscribe(
-    //         (data: any) => {
-    //             console.log(data[0].URL);
-    //             console.log(this._plist);
-    //             window.open(data[0].URL.toString(), "hello");
-    //         }
-    //     );
-    // }
 
     toogleDetails(){
       if(this.showDetails){

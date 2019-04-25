@@ -20,4 +20,15 @@ export class ListComponent {
         this.onToggle.emit(true);
     }
 
+    // openForm(org_id: string, entity_id: string) {
+    //     let url = "";
+    //     this.http.getFormURL(org_id, entity_id).subscribe(
+    //         (data: any) => {
+    //             console.log(data[0].URL);
+    //             console.log(this._plist);
+    //             window.open(data[0].URL.toString(), "hello");
+    //         }
+    //     );
+    // }
+
 }

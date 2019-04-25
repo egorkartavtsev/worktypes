@@ -12,28 +12,41 @@
 <ng-template [ngIf]="!emptyData && !loading">
     <div class="">
         <h4>Трудозатраты. Заголовок таблицы. пока заготовка.</h4>
-        <!-- <table class="table table-bordered ">
+        <table class="table table-bordered">
             <thead class="thead-dark">
                 <tr>
-                <th>Наименование</th>
-                <ng-container *ngFor="let cell of statuses">
-                    <th *ngFor="let item of cell" class="vertText"><span>{{item}}</span></th>
-                </ng-container>
-            </tr>
+                    <th rowspan="2">Наименование</th>
+                    <ng-container *ngFor="let cell of statuses">
+                        <th *ngFor="let item of cell | keyvalue" class="vertText" colspan="2"><span>{{(item.value=="NaN")?"":item.value}}</span></th>
+                    </ng-container>
+                </tr>
+                <tr>
+                        <ng-container *ngFor="let cell of statuses">
+                            <ng-container *ngFor="let item of cell | keyvalue">
+                                <th>Час.</th>
+                                <th>Шт</th>
+                            </ng-container>
+                        </ng-container>
+                </tr>
             </thead>
             <tbody>
-            <tr *ngFor="let row of curData">
-                <td>{{row.name}}</td>
-                <ng-container *ngFor="let cell of row.details">
-                    <td *ngFor="let item of cell" class="{{item.class}}">{{(item.trud=="0")?"":item.trud}}</td>
+            <tr *ngFor="let row of totalData">
+                <td>{{row.iheir}}</td>
+                <ng-container *ngFor="let cell of row.wo_types | keyvalue">
+                    <ng-container *ngFor="let item of cell.value | keyvalue">
+                        <td class="{{item.value['class']}}">
+                            {{(item.value['trud']=="0")?"":item.value['trud']}}
+                        </td>
+                        <td class="{{item.value['class']}} {{item.value['class']}}woccol ">{{(item.value['woc']=="0")?"":item.value['woc']}}</td>
+                    </ng-container>
                 </ng-container>
             </tr>
             </tbody>
-        </table> -->
+        </table>
     </div>
 </ng-template>
 <ng-template [ngIf]="loading">
-    <div class="row justify-content-center">
+    <div class="w-100 row justify-content-center">
         <div class="loader big-loader"></div>
     </div>
 </ng-template>

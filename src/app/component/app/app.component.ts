@@ -1,6 +1,7 @@
-import { Renderer2, ViewChild, Component } from '@angular/core';
+import { Renderer2, ViewChild, Component, OnInit, OnDestroy } from '@angular/core';
 import { NgbDateStruct, NgbCalendar } from '@ng-bootstrap/ng-bootstrap';
 import { HttpService } from '../../services/http.service';
+import { NGB_DATEPICKER_CALENDAR_FACTORY } from '@ng-bootstrap/ng-bootstrap/datepicker/ngb-calendar';
 
 @Component({
   selector: 'app-root',
@@ -27,6 +28,7 @@ export class AppComponent {
   
   /* TZ & WOC */
   totalDataTW: any = [];
+  currentDataTW: any = [];
   statusesTW: any = [];
   emptyDataTW: boolean = true;
   loadingTW: boolean = true;
@@ -35,6 +37,12 @@ export class AppComponent {
   @ViewChild('startCal') startCal: any;
   @ViewChild('endCal') endCal: any;
   @ViewChild('applyButton') applyButton: any;
+  @ViewChild('content') content: any;
+  @ViewChild('mainMenu') mainMenu: any;
+  @ViewChild('toggler') toggler: any;
+  @ViewChild('subrep') subrep: any;
+  lastPos: number = 0;
+  showElements: number = 20;
 
 
   constructor(private renderer: Renderer2, private http: HttpService){
@@ -58,6 +66,14 @@ export class AppComponent {
     );
   }
 
+  ngOnInit(){
+    window.addEventListener('scroll', this.scroll, true);
+  }
+
+  ngOnDestroy() {
+    window.removeEventListener('scroll', this.scroll, true);
+  }
+
   /* validate from*/
   validate(){
     // var supStart = new Date(this.start.replace(/(\d+).(\d+).(\d+) (\d+):(\d+):(\d+)/, '$1/$2/$3 $4:$5:$6'));
@@ -70,41 +86,70 @@ export class AppComponent {
       this.renderer.setAttribute(this.applyButton.nativeElement, 'disabled', 'disabled');
     }
   }
+  /* work with data*/
+
+  scroll = (event: any): void => {
+    let number = 0;
+    let isActive = this.subrep.nativeElement.className.indexOf("active");
+    if(typeof(event.srcElement.scrollingElement)=="undefined"){
+      number = event.srcElement.documentElement.scrollTop;
+      this.showElements = (this.totalDataTW.length >=20)?2:20;
+    } else {
+      number = event.srcElement.scrollingElement.scrollTop;
+    }
+    if(isActive>=0 && number>this.lastPos && this.totalDataTW.length > this.currentDataTW.length){ // scrolling down
+      Array.prototype.push.apply(this.currentDataTW, this.totalDataTW.slice(this.currentDataTW.length, (this.currentDataTW.length + this.showElements)));
+      // console.log(this.currentDataTW.length);
+    }
+    this.lastPos = number;
+  };
+
+  // showMoreElements(){}
 
   getDataTable(){
     this.loadingMT = true;
     this.emptyDataMT = true;
     this.loadingTW = true;
     this.emptyDataTW = true;
+    this.currentDataTW = [];
     let cond = [
       {"key":"org_id", "value":this.org_id},
       {"key":"start", "value":this.start},
       {"key":"end", "value":this.end},
       {"key":"target", "value":"dataTable"}
-    ]
+    ];
+    /* сводный отчёт */
     this.http.getData('310', cond).subscribe(
       (data: any) => {
         this.statusesMT = Object.keys(data['statuses']).map(i => data['statuses'][i]);
-        let tmp  = Object.keys(data['list']).map(i => data['list'][i]);
-        // this.totalData = tmp;
-        this.totalDataMT = [];
-        let ind = 0;
-        for (let row of tmp){
-          this.totalDataMT.push(row);
-          this.totalDataMT[ind]['work_types'] = Object.keys(this.totalDataMT[ind]['work_types']).map(i => this.totalDataMT[ind]['work_types'][i])
-          ++ind;
-        }
+        this.totalDataMT = Object.keys(data['list']).map(i => data['list'][i]);
         this.loadingMT = false;
         this.emptyDataMT = false;
-        /* отчёты ТЗ и ЗВР */
-        this.http.getData('314', cond).subscribe(
-          (data: any) => {
-            this.loadingTW = false;
-            this.emptyDataTW = false;
-            console.log(data);
-          });
+      });
+      /* отчёты ТЗ и ЗВР */
+    this.http.getData('314', cond).subscribe(
+      (data: any) => {
+        this.statusesTW  = Object.keys(data['statuses']).map(i => data['statuses'][i]);
+        this.totalDataTW = data['list'];
+        
+        Array.prototype.push.apply(this.currentDataTW, this.totalDataTW.slice(this.currentDataTW.length, (this.currentDataTW.length + this.showElements)));
+
+        this.loadingTW = false;
+        this.emptyDataTW = false;
+      });
+      // this.toggleMainMenu();
+  }
+
+  toggleMainMenu(){
+      if(this.mainMenu.nativeElement.className.indexOf("d-none")<0){
+        this.renderer.addClass(this.mainMenu.nativeElement, "d-none");
+        this.renderer.addClass(this.content.nativeElement, "bigData");
+        this.renderer.addClass(this.toggler.nativeElement, "attention");
+      } else {
+        this.renderer.removeClass(this.mainMenu.nativeElement, "d-none");        
+        this.renderer.removeClass(this.content.nativeElement, "bigData");        
+        this.renderer.removeClass(this.toggler.nativeElement, "attention");        
       }
-    );
   }
 
 
